@@ -1,0 +1,4 @@
+change_history_table: CHANGE_HISTORY
+vars:
+  database_name: SAMPLE
+  schema_name: SAMPLESCHEMA
