@@ -1,39 +1,52 @@
-name: Deploy to Snowflake (Hardcoded)
+name: Deploy to Snowflake
 
 on:
   push:
     branches:
+      - main
       - dev
       - test
-      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.9
+      - name: Install Python and pip
+        run: |
+          sudo apt update
+          sudo apt install -y python3-pip
 
-    - name: Install schemachange
-      run: pip install schemachange
+      - name: Install schemachange
+        run: |
+          pip install schemachange
 
-    - name: Deploy to Snowflake
-      run: |
-        ENV_FOLDER=$(echo "${GITHUB_REF##*/}" | tr '[:upper:]' '[:lower:]')  # dev/test/main
+      - name: Deploy to Snowflake
+        run: |
+          # Get the branch name (dev/test/main) to use as folder name
+          ENV_FOLDER=$(echo "${GITHUB_REF##*/}" | tr '[:upper:]' '[:lower:]')
+          
+          # Create schemachange profile directory
+          mkdir -p ~/.schemachange
 
-        schemachange \
-          -f schemachange/scripts/$ENV_FOLDER \
-          --account qaifmdu-uv51997 \
-          --user Raj \
-          --password 'RahulRahul@353492' \
-          --role ACCOUNTADMIN \
-          --warehouse COMPUTE_WH \
-          --database SAMPLE \
-          --schema SAMPLESCHEMA \
-          --create-change-history-table
+          # Create profiles.yml with hardcoded Snowflake credentials
+          cat <<EOF > ~/.schemachange/profiles.yml
+default:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: qaifmdu-uv51997
+      user: Raj
+      password: RahulRahul@353492
+      role: ACCOUNTADMIN
+      warehouse: COMPUTE_WH
+      database: SAMPLE
+      schema: SAMPLESCHEMA
+EOF
+
+          # Run schemachange
+          schemachange -f schemachange/scripts/$ENV_FOLDER --create-change-history-table
