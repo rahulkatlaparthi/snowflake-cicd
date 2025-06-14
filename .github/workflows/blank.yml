@@ -32,7 +32,21 @@ jobs:
           # Create schemachange profile directory
           mkdir -p ~/.schemachange
 
-          # Create profiles.yml with hardcoded credentials (no indentation for EOF)
-cat <<EOF > ~/.schemachange/profiles.yml
-default:
-  targe
+          # Create profiles.yml with hardcoded credentials
+          cat <<EOF > ~/.schemachange/profiles.yml
+          default:
+            target: dev
+            outputs:
+              dev:
+                type: snowflake
+                account: qaifmdu-uv51997
+                user: Raj
+                password: RahulRahul@353492
+                role: ACCOUNTADMIN
+                warehouse: COMPUTE_WH
+                database: SAMPLE
+                schema: SAMPLESCHEMA
+          EOF
+          
+                    # Run schemachange
+                    schemachange deploy -f schemachange/scripts/$ENV_FOLDER --create-change-history-table
