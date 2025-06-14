@@ -4,49 +4,41 @@ on:
   push:
     branches:
       - main
-      - dev
-      - test
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Python and pip
-        run: |
-          sudo apt update
-          sudo apt install -y python3-pip
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
       - name: Install schemachange
         run: |
           pip install schemachange
 
-      - name: Deploy to Snowflake
+      - name: Create schemachange profile and deploy
         run: |
-          # Get the branch name (dev/test/main) to use as folder name
-          ENV_FOLDER=$(echo "${GITHUB_REF##*/}" | tr '[:upper:]' '[:lower:]')
-
-          # Create schemachange profile directory
           mkdir -p ~/.schemachange
 
-          # Create profiles.yml with hardcoded credentials
           cat <<EOF > ~/.schemachange/profiles.yml
-          default:
-            target: dev
-            outputs:
-              dev:
-                type: snowflake
-                account: qaifmdu-uv51997
-                user: Raj
-                password: RahulRahul@353492
-                role: ACCOUNTADMIN
-                warehouse: COMPUTE_WH
-                database: SAMPLE
-                schema: SAMPLESCHEMA
-          EOF
-          
-                    # Run schemachange
-                    schemachange deploy -f schemachange/scripts/$ENV_FOLDER --create-change-history-table
+default:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: qaifmdu-uv51997
+      user: Raj
+      password: RahulRahul@353492
+      role: ACCOUNTADMIN
+      warehouse: COMPUTE_WH
+      database: SAMPLE
+      schema: SAMPLESCHEMA
+EOF
+
+          schemachange -f schemachange/scripts/dev --create-change-history-table
