@@ -28,25 +28,11 @@ jobs:
         run: |
           # Get the branch name (dev/test/main) to use as folder name
           ENV_FOLDER=$(echo "${GITHUB_REF##*/}" | tr '[:upper:]' '[:lower:]')
-          
+
           # Create schemachange profile directory
           mkdir -p ~/.schemachange
 
-          # Create profiles.yml with hardcoded Snowflake credentials
-          cat <<EOF > ~/.schemachange/profiles.yml
+          # Create profiles.yml with hardcoded credentials (no indentation for EOF)
+cat <<EOF > ~/.schemachange/profiles.yml
 default:
-  target: dev
-  outputs:
-    dev:
-      type: snowflake
-      account: qaifmdu-uv51997
-      user: Raj
-      password: RahulRahul@353492
-      role: ACCOUNTADMIN
-      warehouse: COMPUTE_WH
-      database: SAMPLE
-      schema: SAMPLESCHEMA
-EOF
-
-          # Run schemachange
-          schemachange -f schemachange/scripts/$ENV_FOLDER --create-change-history-table
+  targe
