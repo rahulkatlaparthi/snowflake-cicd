@@ -1,29 +1,28 @@
-name: Snowflake Schema Change
+name: Print Love Symbol
+
 on:
   push:
-    branches: [ dev ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - test  # Trigger only on 'test' branch
+  workflow_dispatch:
+
 jobs:
-  deploy:
+  print_heart:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.9'
-    - name: Install schemachange
-      run: pip install schemachange==3.1.0
-    - name: Show config
-      run: cat config.yml
-    - name: List scripts
-      run: ls -R scripts/dev
-    - name: Run schemachange
-      env:
-        SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-        SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-      run: |
-        schemachange change \
-          --config-file config.yml \
-          --scripts-folder "scripts/dev"
+      - name: Print Big Heart Symbol
+        run: |
+          cat << 'EOF'
+           ***       ***
+         *******   *******
+       *********** ***********
+      ***************************
+      ***************************
+       *************************
+         *********************
+           *****************
+             *************
+               *********
+                 *****
+                   *
+EOF
