@@ -17,6 +17,7 @@ jobs:
       run: pip install schemachange==4.0.1  # Pin to version 4.0.1
     - name: debug schemachange
       run: |
+        cat config.yml
         schemachange deploy \
           --config-file config.yml \
           --dry-run
