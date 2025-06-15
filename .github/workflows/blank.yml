@@ -1,7 +1,7 @@
 name: Snowflake Schema Change
 on:
   push:
-    branches: [ dev ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 jobs:
@@ -14,16 +14,25 @@ jobs:
       with:
         python-version: '3.9'
     - name: Install schemachange
-      run: pip install schemachange==3.1.0
-    - name: Show config
-      run: cat config.yml
-    - name: List scripts
-      run: ls -R scripts/dev
+      run: pip install schemachange==4.0.1
+    - name: List repository contents
+      run: ls -R
+    - name: Show schemachange help
+      run: schemachange deploy --help
     - name: Run schemachange
       env:
+        SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
         SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
         SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
       run: |
-        schemachange change \
-          --config-file config.yml \
-          --scripts-folder "scripts/dev"
+        schemachange deploy \
+          --root-folder "scripts/dev" \
+          --snowflake-account "$SNOWFLAKE_ACCOUNT" \
+          --snowflake-user "$SNOWFLAKE_USER" \
+          --snowflake-role "ACCOUNYADMIN" \
+          --snowflake-warehouse "COMPUTE_WH" \
+          --snowflake-database "SAMPLE" \
+          --change-history-table "SCHEMACHANGE.CHANGE_HISTORY" \
+          --create-change-history-table \
+          --snowflake-authenticator "password" \
+          --dry-run
