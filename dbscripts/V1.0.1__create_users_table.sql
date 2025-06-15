@@ -1,5 +1,5 @@
 --! Description: Create users table
-CREATE OR REPLACE TABLE my_schema.users (
+CREATE OR REPLACE TABLE my_schema1.users (
     id            INT AUTOINCREMENT PRIMARY KEY,
     name          STRING NOT NULL,
     email         STRING UNIQUE,
