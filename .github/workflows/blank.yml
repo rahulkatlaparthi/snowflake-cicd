@@ -14,18 +14,16 @@ jobs:
       with:
         python-version: '3.9'
     - name: Install schemachange
-      run: pip install schemachange==4.0.1  # Pin to version 4.0.1
-    - name: debug schemachange
-      run: |
-        cat config.yml
-        schemachange deploy \
-          --config-file config.yml \
-          --dry-run
+      run: pip install schemachange==3.1.0
+    - name: Show config
+      run: cat config.yml
+    - name: List scripts
+      run: ls -R scripts/dev
     - name: Run schemachange
       env:
+        SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
         SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
       run: |
-        schemachange deploy \
+        schemachange change \
           --config-file config.yml \
-          --scripts-folder "schemachange/scripts/dev" \
-          --password "$SNOWFLAKE_PASSWORD"
+          --scripts-folder "scripts/dev"
