@@ -28,5 +28,5 @@ jobs:
           --snowflake-warehouse "COMPUTE_WH" \
           --snowflake-database "SAMPLE" \
           --change-history-table "SCHEMACHANGE.CHANGE_HISTORY" \
-          --scripts-folder "schemachange" \
+          --scripts-folder "schemachange/scripts/dev" \
           --password "$SNOWFLAKE_PASSWORD"
