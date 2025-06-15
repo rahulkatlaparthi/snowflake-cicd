@@ -1,4 +1,8 @@
-change_history_table: CHANGE_HISTORY
-vars:
-  database_name: SAMPLE
-  schema_name: SAMPLESCHEMA
+snowflake:
+  account: "UV51997"  # e.g., xy12345.us-east-1.aws
+  user: "Raj"                  # e.g., CICD_USER
+  role: "ACCOUNTADMIN"
+  warehouse: "COMPUTE_WH"
+  database: "SAMPLE"
+  change_history_table: "SCHEMACHANGE.CHANGE_HISTORY"
+  root_folder: "scripts/dev"
