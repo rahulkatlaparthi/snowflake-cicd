@@ -1,14 +1,9 @@
 name: snowflake-devops-demo
 
-# Controls when the action will run. 
 on:
   push:
     branches:
       - dev
-    # paths:
-    #   - 'dbscripts/**'
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
@@ -16,15 +11,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'  # Use a supported version
-
+          python-version: '3.11'
 
       - name: Run schemachange
         env:
@@ -34,11 +27,21 @@ jobs:
           SF_WAREHOUSE: "COMPUTE_WH"
           SF_DATABASE: SAMPLE
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          CHANGE_HISTORY_TABLE: '"SAMPLE"."SCHEMACHANGE"."CHANGE_HISTORY"'
         run: |
           echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
           python --version
+
           echo "Step 1: Installing schemachange"
           pip install schemachange==3.7.0
           
           echo "Step 2: Running schemachange"
-          schemachange -f $GITHUB_WORKSPACE/dbscripts -a $SF_ACCOUNT -u $SF_USERNAME -r $SF_ROLE -w $SF_WAREHOUSE -d $SF_DATABASE -c $SF_DATABASE.SCHEMACHANGE.CHANGE_HISTORY --create-change-history-table
+          schemachange \
+            -f $GITHUB_WORKSPACE/dbscripts \
+            -a $SF_ACCOUNT \
+            -u $SF_USERNAME \
+            -r $SF_ROLE \
+            -w $SF_WAREHOUSE \
+            -d $SF_DATABASE \
+            -c $CHANGE_HISTORY_TABLE \
+            --create-change-history-table
