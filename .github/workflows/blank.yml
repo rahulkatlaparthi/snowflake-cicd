@@ -8,25 +8,18 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4  # Updated to latest version
+    - uses: actions/checkout@v4
     - name: Set up Python
-      uses: actions/setup-python@v5  # Updated to latest version
+      uses: actions/setup-python@v5
       with:
         python-version: '3.9'
     - name: Install schemachange
       run: pip install schemachange
     - name: Run schemachange
       env:
-        SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-        SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-        SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}  # Added password secret
+        SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
       run: |
         schemachange change \
-          --snowflake-account "$SNOWFLAKE_ACCOUNT" \
-          --snowflake-user "$SNOWFLAKE_USER" \
-          --snowflake-role "ACCOUNTADMIN" \
-          --snowflake-warehouse "COMPUTE_WH" \
-          --snowflake-database "SAMPLE" \
-          --change-history-table "SCHEMACHANGE.CHANGE_HISTORY" \
-          --scripts-folder "schemachange/scripts/dev" \
+          --config-file config.yml \
+          --scripts-folder "scripts/dev" \
           --password "$SNOWFLAKE_PASSWORD"
