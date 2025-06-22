@@ -1,7 +1,6 @@
--- models/staging/stg_orders.sql
-
 select
-  order_id,
-  customer_id,
-  order_date
+    ID as order_id,
+    CUSTOMER_ID,
+    ORDER_DATE,
+    AMOUNT
 from {{ source('raw', 'orders') }}
