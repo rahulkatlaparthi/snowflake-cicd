@@ -5,7 +5,7 @@ name: dbt CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - sample
   pull_request:
 
 jobs:
