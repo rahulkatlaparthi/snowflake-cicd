@@ -1,0 +1,9 @@
+name: 'dbt_snowflake_project'
+version: '1.0'
+config-version: 2
+
+profile: 'snowflake_profile'
+
+models:
+  dbt_snowflake_project:
+    +materialized: view
