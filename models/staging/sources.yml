@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: raw       # <-- database schema
+    description: "Raw data from external source"
+    tables:
+      - name: orders
+        description: "Orders table loaded from source system"
