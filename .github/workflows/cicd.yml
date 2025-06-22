@@ -1,6 +1,6 @@
 # .github/workflows/dbt-ci.yml
 
-name: dbt CI/CD Pipeline
+name: dbt CI/CD Pipelines
 
 on:
   push:
