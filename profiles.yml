@@ -8,7 +8,7 @@ snowflake_profile:
       password: Rahul@35349289
       role: ACCOUNTADMIN
       warehouse: COMPUTE_WH
-      database: SAMPLE
-      schema: SAMPLESCHEMA
+      database: DBT_DEMO
+      schema: RAW
       threads: 4
       client_session_keep_alive: False
