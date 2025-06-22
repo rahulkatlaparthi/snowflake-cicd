@@ -6,3 +6,5 @@ sources:
     tables:
       - name: orders
         description: "Orders table loaded from source system"
+      - name: customers
+        description: "Customer base table"
