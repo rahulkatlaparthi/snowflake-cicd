@@ -3,12 +3,12 @@ snowflake_profile:
   outputs:
     dev:
       type: snowflake
-      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
-      user: "{{ env_var('SNOWFLAKE_USER') }}"
-      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
-      role: "ACCOUNTADMIN"
-      database: "SAMPLE"
-      warehouse: "COMPUTE_WH"
-      schema: "SCHEMACHANGE"
+      account: QAIFMDU-UV51997
+      user: RAJ
+      password: Rahul@35349289
+      role: ACCOUNTADMIN
+      database: SAMPLE
+      warehouse: COMPUTE_WH
+      schema: SCHEMACHANGE
       threads: 4
       client_session_keep_alive: False
