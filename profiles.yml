@@ -5,7 +5,7 @@ snowflake_profile:
       type: snowflake
       account: QAIFMDU-UV51997
       user: RAJ
-      password: Rahul@35349289
+      password: Rahul@3534928
       role: ACCOUNTADMIN
       warehouse: COMPUTE_WH
       database: "SAMPLE"
