@@ -1,9 +1,24 @@
-with orders as (
+with customers as (
+    select * from {{ ref('stg_customers') }}
+),
+
+orders as (
     select * from {{ ref('stg_orders') }}
+),
+
+aggregated as (
+    select
+        o.customer_id,
+        sum(o.amount) as total_amount
+    from orders o
+    group by o.customer_id
 )
+
 select
-    customer_id,
-    count(order_id) as total_orders,
-    sum(total_amount) as total_sales
-from orders
-group by customer_id
+    c.customer_id,
+    c.customer_name,
+    c.email,
+    a.total_amount
+from customers c
+left join aggregated a
+on c.customer_id = a.customer_id
