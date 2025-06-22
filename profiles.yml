@@ -5,10 +5,10 @@ snowflake_profile:
       type: snowflake
       account: QAIFMDU-UV51997
       user: RAJ
-      password: Rahul@3534928
+      password: Rahul@35349289
       role: ACCOUNTADMIN
       warehouse: COMPUTE_WH
-      database: "SAMPLE"
-      schema: "SAMPLESCHEMA"
+      database: SAMPLE
+      schema: SAMPLESCHEMA
       threads: 4
       client_session_keep_alive: False
