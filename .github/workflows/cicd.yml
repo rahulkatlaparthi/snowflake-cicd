@@ -1,0 +1,56 @@
+# .github/workflows/dbt-ci.yml
+
+name: dbt CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  dbt-run:
+    name: "Run dbt Models"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dbt for Snowflake
+        run: pip install dbt-snowflake
+
+      - name: 🛠️ Set up dbt profile for Snowflake
+        run: |
+          mkdir -p ~/.dbt
+          cat <<EOF > ~/.dbt/profiles.yml
+          snowflake_profile:
+            target: dev
+            outputs:
+              dev:
+                type: snowflake
+                account: "${{ secrets.SNOWFLAKE_ACCOUNT }}"
+                user: "${{ secrets.SNOWFLAKE_USER }}"
+                password: "${{ secrets.SNOWFLAKE_PASSWORD }}"
+                role: "${{ secrets.SNOWFLAKE_ROLE }}"
+                database: "${{ secrets.SNOWFLAKE_DATABASE }}"
+                warehouse: "${{ secrets.SNOWFLAKE_WAREHOUSE }}"
+                schema: "${{ secrets.SNOWFLAKE_SCHEMA }}"
+                threads: 4
+                client_session_keep_alive: False
+          EOF
+
+      - name: ✅ Test Connection to Snowflake
+        run: dbt debug --profile snowflake_profile
+
+      - name: 🧪 Run dbt Build (includes tests)
+        run: dbt build --profile snowflake_profile
+
+      - name: 📚 Generate dbt Documentation (optional)
+        run: |
+          dbt docs generate --profile snowflake_profile
